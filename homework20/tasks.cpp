@@ -40,6 +40,41 @@ void func2(char* str)
 	cout << "¬ильно: " << 500 - s_str << endl;
 }
 
+
+void CreateArr(char* str, int* size, char*& string)
+{
+	*size = strlen(str) + 1;
+	string = new char[*size];
+
+	for (int i = 0; i < *size; i++) string[i] = str[i];
+}
+
+bool needToDel(char symb, char* symbs)
+{
+	int size_symbs = strlen(symbs);
+	for (int i = 0; i < size_symbs; i++) if (symbs[i] == symb) return true;
+	return false;
+}
+
+void func3(char*& string, int* size, char* symbs)
+{
+	int new_size = 0;
+	for (int i = 0; i < *size; i++) if (!needToDel(string[i], symbs)) new_size++;
+	char* temp = new char[new_size];
+	for (int i = 0, j = 0; i < *size; i++)
+	{
+		if (!needToDel(string[i], symbs))
+		{
+			temp[j] = string[i];
+			j++;
+		}
+	}
+
+	delete[] string;
+	*size = new_size;
+	string = temp;
+}
+
 int main()
 {
 	// Task 1
@@ -53,12 +88,29 @@ int main()
 	cout << func(str, word);*/
 
 	// Task 2
-	setlocale(LC_ALL, "RU");
+	/*setlocale(LC_ALL, "RU");
 	char str[500] = "";
 	cout << "¬ведить р€док: ";
 	cin.getline(str, 500);
-	func2(str);
+	func2(str);*/
 
+	// Task 3
+	setlocale(LC_ALL, "RU");
+	char str[500], symbs[500];
+	char* string = NULL;
+	int size = 0;
+
+	cout << "¬ведiть р€док: ";
+	cin.getline(str, 500);
+
+	cout << "¬ведить символи, що треба видалити, пiдр€д: ";
+	cin.getline(symbs, 500);
+
+	CreateArr(str, &size, string);
+
+	func3(string, &size, symbs);
+	cout << string;
+
+	delete[] string;
 	return 0;
 }
-
